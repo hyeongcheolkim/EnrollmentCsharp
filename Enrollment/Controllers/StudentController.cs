@@ -46,7 +46,7 @@ public class StudentController : ControllerBase
 
         if (student == null)
         {
-            return Unauthorized(new { message = "로그인 실패: ID 또는 비밀번호가 올바르지 않습니다." });
+            return Unauthorized(new ApiExceptionDto{ Message = "로그인 실패: ID 또는 비밀번호가 올바르지 않습니다." });
         }
 
         var principal = _authHelper.CreateClaimsPrincipal(student.Id, student.MemberInfo.Name, UserRole.Student);
