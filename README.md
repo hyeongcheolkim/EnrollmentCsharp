@@ -42,12 +42,27 @@
 
 ## 📃 기술스택
 
-- 추가예정
+- Framework: .NET 9.0
+- Web Framework: ASP.NET Core Web API
+- Database: SQLite
+- ORM: Entity Framework Core
+- API Documentation: Swashbuckle (Swagger)
+- Authentication: Cookie Authentication
+- Password Hashing: BCrypt.Net-Next
+- Object Mapping: AutoMapper
 
 ## 🔍 기술적 구현 사항
-
-- 추가예정
-
+- Global Exception Handling: GlobalExceptionHandlingMiddleware를 구현하여 애플리케이션 전역에서 발생하는 예외를 일관된 JSON 형식(ApiExceptionDto)으로 처리합니다.
+- Custom Model Validation: Program.cs에서 InvalidModelStateResponseFactory를 재정의하여, 모델 바인딩 및 유효성 검사 실패 시(예: JsonException 또는 빈 body 요청) 커스텀된 오류 응답을 반환합니다.
+- Authentication: 쿠키 기반 인증을 사용하며, Program.cs에서 쿠키 이름을 "JSESSIONID"로 커스텀하고 30분의 만료 시간을 설정합니다.
+- Dependency Injection: Program.cs에서 Scoped 생명주기로 IAdminService, ICourseService 등 각종 서비스와 IPasswordHasher, IAuthHelper 같은 유틸리티를 주입하여 사용합니다.
+- Data Access (EF Core):
+  - ApplicationDbContext를 통해 데이터베이스와 상호작용합니다.
+  - OnModelCreating 메서드 내에서 OwnsOne을 사용하여 MemberInfo, CourseTime 같은 값 객체(Value Object)를 모델에 포함시킵니다.
+  - HasIndex().IsUnique()를 사용하여 Department, Subject 등의 Code 속성에 Unique 제약 조건을 설정함으로써 "각 enitity들의 code는 중복되게 만들 수 없다"는 비즈니스 로직을 데이터베이스 수준에서 보장합니다.
+- DTOs & AutoMapper:
+  - 요청(Request)과 응답(Response)에 DTO (Data Transfer Object) 패턴을 적용하여 API의 인터페이스를 명확하게 정의합니다 (예: AdminRegisterRequest, CourseResponse).
+  - MappingProfile.cs에서 AutoMapper를 사용하여 엔티티 모델(예: Student)과 DTO(예: LoginResponse) 간의 매핑을 설정합니다.
 
 
 ### [눌러서 프론트 소개 페이지로 가기](https://github.com/hyeongcheolkim/enrollmentFront)
